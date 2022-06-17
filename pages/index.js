@@ -1,12 +1,11 @@
-import Link from 'next/link'
+import { Button } from '@mui/material'
 import React from 'react'
 
 export default function Home() {
   return (
     <>
-      <Link href='/login'>
-        <a>login</a>
-      </Link>
+      <Button variant='contained' href='/login'>Login</Button>
+      <Button variant='outlined' href='/register'>Register</Button>
     </>
   )
 }

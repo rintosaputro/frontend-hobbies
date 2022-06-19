@@ -2,9 +2,13 @@ import { Box, Container, Typography,  Grid, Button } from '@mui/material'
 import Image from 'next/image'
 import React, { useState } from 'react'
 import {useRouter} from 'next/router'
+import {useDispatch} from 'react-redux'
 import ListHobby from '../ListHobby'
 import ModalHobby from './ModalHobby'
 import UserList from './UserList'
+import constant from '../../redux/constant'
+
+const {AUTH_CLEAR} = constant
 
 const AfterLogin = () => {
   const hobbies = [
@@ -15,12 +19,22 @@ const AfterLogin = () => {
   const [open, setOpen] = useState(false)
 
   const route = useRouter()
+  const dispatch = useDispatch()
 
   const handleOpenModal = () => setOpen(true)
   const handleCloseModal = () => setOpen(false)
   const handleUpdateProfile = (e) => {
     e.preventDefault()
     route.push('/update-profile')
+  }
+
+  const handleLogout = (e) => {
+    e.preventDefault()
+    dispatch({type: 'AUTH_LOGOUT'})
+    dispatch({type: AUTH_CLEAR})
+    dispatch({type: 'AUTH_LOGOUT_CLEAR'})
+    window.localStorage.removeItem('token')
+    route.push('/login')
   }
 
   return (
@@ -51,10 +65,17 @@ const AfterLogin = () => {
           <Grid container justifyContent={'center'}>
             <Grid item xs={12} sm={8} md={6}>
               <Typography variant='h3' component='h1' fontWeight='600' color='common.white' textAlign={'center'} sx={{mb: 5}}>Hobby List</Typography>
-              <Box sx={{display: 'flex', justifyContent: 'center'}}>
-                <Button variant='contained' onClick={handleOpenModal} sx={{fontWeight: 'bold'}}>Add new hobby</Button>
-                <Button variant='outlined' sx={{ml: 3, color: '#48dbfb'}} onClick={handleUpdateProfile}>Update profile</Button>
-              </Box>
+              <Grid container spacing={2}>
+                <Grid item xs={12} md={6} lg={4}>
+                  <Button variant='contained' onClick={handleOpenModal} sx={{fontWeight: 'bold'}} fullWidth>Add new hobby</Button>
+                </Grid>
+                <Grid item xs={12} md={6} lg={4}>
+                  <Button variant='outlined' sx={{color: '#48dbfb'}} onClick={handleUpdateProfile} fullWidth>Update profile</Button>
+                </Grid>
+                <Grid item xs={12} md={6} lg={4}>
+                  <Button variant='contained' color='secondary' onClick={handleLogout} fullWidth>Log out</Button>
+                </Grid>
+              </Grid>
               <ListHobby hobbies={hobbies} profile={true} />
             </Grid>
           </Grid>

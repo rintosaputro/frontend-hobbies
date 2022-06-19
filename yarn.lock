@@ -394,7 +394,14 @@
     "prop-types" "^15.8.1"
     "react-is" "^17.0.2"
 
-"@mui/material@^5.8.4":
+"@mui/icons-material@^5.8.4":
+  "integrity" "sha512-9Z/vyj2szvEhGWDvb+gG875bOGm8b8rlHBKOD1+nA3PcgC3fV6W1AU6pfOorPeBfH2X4mb9Boe97vHvaSndQvA=="
+  "resolved" "https://registry.npmjs.org/@mui/icons-material/-/icons-material-5.8.4.tgz"
+  "version" "5.8.4"
+  dependencies:
+    "@babel/runtime" "^7.17.2"
+
+"@mui/material@^5.0.0", "@mui/material@^5.8.4":
   "integrity" "sha512-KlOJS1JGhwuhdoF4fulmz41h/YxyMdZSc+ncz+HAah0GKn8ovAs5774f1w0lIasxbtI1Ziunwvmnu9PvvUKdMw=="
   "resolved" "https://registry.npmjs.org/@mui/material/-/material-5.8.4.tgz"
   "version" "5.8.4"
@@ -470,6 +477,28 @@
   "version" "12.1.6"
   dependencies:
     "glob" "7.1.7"
+
+"@next/swc-android-arm-eabi@12.1.6":
+
+"@next/swc-android-arm64@12.1.6":
+
+"@next/swc-darwin-arm64@12.1.6":
+
+"@next/swc-darwin-x64@12.1.6":
+
+"@next/swc-linux-arm-gnueabihf@12.1.6":
+
+"@next/swc-linux-arm64-gnu@12.1.6":
+
+"@next/swc-linux-arm64-musl@12.1.6":
+
+"@next/swc-linux-x64-gnu@12.1.6":
+
+"@next/swc-linux-x64-musl@12.1.6":
+
+"@next/swc-win32-arm64-msvc@12.1.6":
+
+"@next/swc-win32-ia32-msvc@12.1.6":
 
 "@next/swc-win32-x64-msvc@12.1.6":
   "integrity" "sha512-4ZEwiRuZEicXhXqmhw3+de8Z4EpOLQj/gp+D9fFWo6ii6W1kBkNNvvEx4A90ugppu+74pT1lIJnOuz3A9oQeJA=="

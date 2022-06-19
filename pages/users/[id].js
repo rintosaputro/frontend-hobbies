@@ -1,26 +1,27 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { useRouter } from 'next/router'
 import Layout from '../../components/Layout'
 import { Box, Container, Grid, Typography } from '@mui/material'
 import Image from 'next/image'
 import ListHobby from '../../components/ListHobby'
 import Link from 'next/link'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import detailUserAction from '../../redux/actions/user/detailUser'
 
 const UserDetail = () => {
-  const results = {
-    id: 1,
-    firstName: 'Rinto',
-    lastName: 'Saputro',
-    age: 26
-  }
-  const hobbies = [
-    {id: 1, hobby: 'fishing', usersHobbies: {id: 3, isActive: true, userId: 1, hobbyId: 1}},
-    {id: 2, hobby: 'cycling', usersHobbies: {id: 5, isActive: true, userId: 1, hobbyId: 2}},
-    {id: 3, hobby: 'reading', usersHobbies: {id: 7, isActive: false, userId: 1, hobbyId: 3}}
-  ]
+  const route = useRouter()
+  const dispatch = useDispatch()
+
+  const user = useSelector(state => state.detailUser.results)
+
+  useEffect(() => {
+    const {id} = route.query
+    dispatch(detailUserAction(id))
+  }, [])
 
   return (
-    <Layout title={`${results.firstName} ${results.lastName}`}>
+    <Layout title={`${user.firstName} ${user.lastName}`}>
       <Box 
         sx={{
           position: 'relative',
@@ -51,8 +52,11 @@ const UserDetail = () => {
           </Link>
           <Grid container justifyContent={'center'}>
             <Grid item xs={12} sm={8} md={6}>
-              <Typography variant='h3' component='h1' fontWeight='600' color='common.white' textAlign={'center'} sx={{mb: 5}}>{`${results.firstName} Hobby List`}</Typography>
-              <ListHobby hobbies={hobbies} />
+              <Typography variant='h3' component='h1' fontWeight='600' color='common.white' textAlign={'center'} sx={{mb: 5}}>{`${user.firstName} ${user.lastName}`}</Typography>
+              {user.hobbies.length > 0 
+                ? <ListHobby hobbies={user.hobbies} />
+                : <Typography variant='h3' component='h2' fontWeight='bold' color='common.white' textAlign='center'>Hobby is Empty</Typography>
+              }
             </Grid>
           </Grid>
         </Container>

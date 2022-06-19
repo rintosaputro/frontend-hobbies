@@ -3,7 +3,8 @@ const constant = {
   AUTH_REGISTER: 'AUTH_REGISTER',
   AUTH_CLEAR: 'AUTH_CLEAR',
   GET_PROFILE: 'GET_PROFILE',
-  GET_USERS: 'GET_USERS', 
+  GET_USERS: 'GET_USERS',
+  GET_DETAIL_USER: 'GET_DETAIL_USER',
 }
 
 export default constant

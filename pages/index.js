@@ -1,11 +1,15 @@
-import { Button } from '@mui/material'
 import React from 'react'
+import AfterLogin from '../components/home/AfterLogin'
+import BeforeLogin from '../components/home/BeforeLogin'
 
 export default function Home() {
+  const token = true
   return (
     <>
-      <Button variant='contained' href='/login'>Login</Button>
-      <Button variant='outlined' href='/register'>Register</Button>
+      {token 
+        ? <AfterLogin />
+        : <BeforeLogin />
+      }
     </>
   )
 }

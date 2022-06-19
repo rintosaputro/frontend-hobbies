@@ -31,6 +31,11 @@ const addHobby = (state = intialState, action) => {
       results: action.payload
     }
   }
+  case `${ADD_HOBBY}_CLEAR`: {
+    return {
+      ...intialState
+    }
+  }
   default: {
     return {...state}
   }

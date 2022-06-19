@@ -29,6 +29,7 @@ const ModalHobby = ({id, open, handleClose, label, activeHobby, hobbyId, addHobb
   const [errMessage, setErrMessage] = useState('')
   const [dataChange, setDataChange] = useState({})
   const [isAddHobby, setIsAddHobby] = useState(false)
+  const [isEdit, setIsEdit] = useState(false)
 
   const dispatch = useDispatch()
   const {getHobbyByName, addHobby: addHobbyState, editUserHobby, addHobbiesUsers} = useSelector(state => state)
@@ -48,10 +49,12 @@ const ModalHobby = ({id, open, handleClose, label, activeHobby, hobbyId, addHobb
 
   useEffect(() => {
     const {id, isActive} = dataChange
-    if (addHobbyState.isSuccess) {
+    if (addHobbyState.isSuccess && isEdit) {
       dispatch(editUserHobbyAction(id, isActive, addHobbyState.results.id))
+      setIsEdit(false)
     }
     if (addHobbyState.isSuccess && isAddHobby) {
+      setIsAddHobby(false)
       dispatch(addHobbyUserAction(addHobbyState.results.id, isActive))
     }
   }, [addHobbyState.isSuccess])
@@ -81,12 +84,14 @@ const ModalHobby = ({id, open, handleClose, label, activeHobby, hobbyId, addHobb
     let err
     
     dispatch({type: 'GET_HOBBY_NAME_CLEAR'})
+    dispatch({type: 'ADD_HOBBY_CLEAR'})
   
     if ((inputValue === label && activeHobby === isActive) || (!onChange)) {
       err = true
       setErrMessage('No data changed')
     }
     if (!err) {
+      setIsEdit(true)
       if (inputValue) {
         dispatch(getHobbyByNameAction(inputValue))
         setDataChange({id, isActive, hobbyId})
@@ -100,6 +105,7 @@ const ModalHobby = ({id, open, handleClose, label, activeHobby, hobbyId, addHobb
   const handleAdd = (e) => {
     e.preventDefault()
     dispatch({type: 'ADD_HOBBY_USER_CLEAR'})
+    dispatch({type: 'ADD_HOBBY_CLEAR'})
 
     let err
     setErrMessage('')

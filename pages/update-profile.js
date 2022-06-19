@@ -1,14 +1,34 @@
 import { Box, Container, Typography, Button, FormControl, InputLabel, Select, MenuItem, List, ListItem, ListItemText } from '@mui/material'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import Image from 'next/image'
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import Layout from '../components/Layout'
 import Input from '../components/Input'
 import { checkEmail, checkPassword } from '../helper/validator'
+import updateProfileAction from '../redux/actions/profile/updateProfile'
+import { getProfile } from '../redux/actions/profile/profile'
+import addHobbyUserAction from '../redux/actions/hobby/addHobbiesUsers'
 
 const UpdateProfile = () => {
   const [errMessage, setErrMessage] = useState('')
-  const {profile, hobbiesList} = useSelector(state => state)
+  const [successMessage, setSuccessMessage] = useState('')
+  const [hobbyAdd, setHobbyAdd] = useState('')
+  const {profile, hobbiesList, updateProfile} = useSelector(state => state)
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    if (updateProfile.isSuccess) {
+      dispatch(getProfile)
+      setSuccessMessage('Successfully update profile')
+      setTimeout(() => {
+        setSuccessMessage('')
+      }, 5000)
+    }
+  }, [updateProfile.isSuccess])
+
+  const handleChange = (e) => {
+    setHobbyAdd(e.target.value)
+  }
 
   const handleUpdate = (e) => {
     e.preventDefault()
@@ -31,7 +51,7 @@ const UpdateProfile = () => {
       setErrMessage('Last name must be string')
       err = true
     }
-    if (!checkEmail(email)) {
+    if (!checkEmail(email) && email) {
       setErrMessage('Email not valid')
       err = true
     }
@@ -44,9 +64,12 @@ const UpdateProfile = () => {
       err = true
     }
     if (!err) {
-      console.log('tes')
+      const data = {firstName, lastName, age, email, password}
+      dispatch(updateProfileAction(data))
     }
-    console.log(firstName, lastName, age, email)
+    if (hobbyAdd) {
+      dispatch(addHobbyUserAction(hobbyAdd, 1))
+    }
   }
 
   return (
@@ -83,7 +106,7 @@ const UpdateProfile = () => {
             <Input id='confirmPassword' label='Confirm Password' fullWidth={true} type='password' />
             <Typography variant='p' component='p' color='common.white' sx={{mt: 4}}>Your Hobbies: </Typography>
             <List sx={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
-              {profile.results?.hobbies.map(({id, hobby}) => (
+              {profile.results.hobbies.length > 0 && profile.results.hobbies.map(({id, hobby}) => (
                 <ListItem key={id} sx={{width: 'fit-content'}}>
                   <ListItemText sx={{color: 'white'}}>{hobby},</ListItemText>
                 </ListItem>
@@ -96,13 +119,15 @@ const UpdateProfile = () => {
                 id='selectId'
                 label='Add another hobby'
                 sx={{bgcolor: 'rgba(236, 240, 241, 0.2)', color: 'white'}}
-                // onChange={}
+                onChange={handleChange}
               >
                 {hobbiesList.results?.map(data => (
                   <MenuItem value={data.id} key={data.id}>{data.hobby}</MenuItem>
                 ))}
               </Select>
             </FormControl>
+            {successMessage &&  <Typography variant='h5' component={'p'} color='common.white' textAlign={'center'}>{successMessage}</Typography>}
+            {(updateProfile.isError || errMessage) && <Typography variant='h5' component={'p'} color='secondary' textAlign={'center'}>{updateProfile.results || errMessage}</Typography>}
             <Box sx={{textAlign: 'center', my: 5}}>
               <Button variant='contained' sx={{width: '50%', height: '50px', fontWeight: '600'}} onClick={handleUpdate}>Update</Button>
             </Box>

@@ -2,15 +2,19 @@ import http from '../../../helper/helper'
 import constant from '../../constant'
 const {UPDATE_PROFILE} = constant
 
-export const getProfile = (dataInput) => (
+const updateProfileAction = (dataInput) => (
   async (dispatch) => {
     try {
       const param = new URLSearchParams()
-  
-      dataInput.forEach(value => param.append(`${value}`, value))
+
+      for (let key in dataInput) {
+        if (dataInput[key]) {
+          param.append(`${key}`, dataInput[key])
+        }
+      }
   
       const token = window.localStorage.getItem('token')
-      const {data} = await http(token).get('/users/profile')
+      const {data} = await http(token).patch('/users/profile', param)
       dispatch({
         type: UPDATE_PROFILE,
         payload: data.results
@@ -24,3 +28,5 @@ export const getProfile = (dataInput) => (
     }
   }
 )
+
+export default updateProfileAction

@@ -9,7 +9,7 @@ const intialState = {
   results: {}
 }
 
-const getProfile = (state = intialState, action) => {
+const updateProfile = (state = intialState, action) => {
   switch (action.type) {
   case `${UPDATE_PROFILE}_LOADING`: {
     return {
@@ -40,4 +40,4 @@ const getProfile = (state = intialState, action) => {
   }
 }
 
-export default getProfile
+export default updateProfile

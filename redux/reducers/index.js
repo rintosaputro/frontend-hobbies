@@ -10,7 +10,7 @@ import editUserHobby from './hobbies/editUserHobby'
 import getHobbyByName from './hobbies/getHobbyByName'
 import addHobby from './hobbies/addHobby'
 import addHobbiesUsers from './hobbies/addHobbiesUsers'
-import UpdateProfile from '../../pages/update-profile'
+import updateProfile from './profile/updateProfile'
 
 const rootReducer = combineReducers({
   login,
@@ -24,7 +24,7 @@ const rootReducer = combineReducers({
   getHobbyByName,
   addHobby,
   addHobbiesUsers,
-  UpdateProfile
+  updateProfile
 })
 
 export default rootReducer

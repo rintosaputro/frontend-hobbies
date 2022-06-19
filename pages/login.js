@@ -7,6 +7,7 @@ import Input from '../components/Input'
 import Layout from '../components/Layout'
 import loginAction from '../redux/actions/auth/login'
 import { checkEmail } from '../helper/validator'
+import { getProfile } from '../redux/actions/profile/profile'
 
 const Login = () => {
   const [errMessage, setErrMessage] = useState('')
@@ -23,8 +24,8 @@ const Login = () => {
   }, [])
   
   useEffect(() => {
-    const token = window.localStorage.getItem('token')
-    if (token) {
+    if (login.isSuccess) {
+      dispatch(getProfile)
       route.push('/')
     }
   }, [login])

@@ -25,7 +25,8 @@ const UserDetail = () => {
       <Box 
         sx={{
           position: 'relative',
-          height: '100vh',
+          height: '100%',
+          minHeight: '700px',
           '&::after': {
             position: 'absolute',
             content: '""',
@@ -53,7 +54,7 @@ const UserDetail = () => {
           <Grid container justifyContent={'center'}>
             <Grid item xs={12} sm={8} md={6}>
               <Typography variant='h3' component='h1' fontWeight='600' color='common.white' textAlign={'center'} sx={{mb: 5}}>{`${user.firstName} ${user.lastName}`}</Typography>
-              {user.hobbies.length > 0 
+              {user.hobbies?.length > 0 
                 ? <ListHobby hobbies={user.hobbies} />
                 : <Typography variant='h3' component='h2' fontWeight='bold' color='common.white' textAlign='center'>Hobby is Empty</Typography>
               }

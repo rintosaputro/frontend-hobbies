@@ -1,28 +1,53 @@
 import { Box, Container, Typography, Button, FormControl, InputLabel, Select, MenuItem, List, ListItem, ListItemText } from '@mui/material'
+import { useSelector } from 'react-redux'
 import Image from 'next/image'
-import React from 'react'
+import React, {useState} from 'react'
 import Layout from '../components/Layout'
 import Input from '../components/Input'
+import { checkEmail, checkPassword } from '../helper/validator'
 
 const UpdateProfile = () => {
-  const results = {id: 4, firstName: 'jon', lastName: 'Saputri', age: 26, email: 'test@mail.com'}
-  const hobbies = [
-    {id: 1, hobby: 'fishing', usersHobbies: {id: 3, isActive: true, userId: 1, hobbyId: 1}},
-    {id: 2, hobby: 'cycling', usersHobbies: {id: 5, isActive: true, userId: 1, hobbyId: 2}},
-    {id: 3, hobby: 'reading', usersHobbies: {id: 7, isActive: false, userId: 1, hobbyId: 3}},
-    {id: 4, hobby: 'fishing', usersHobbies: {id: 3, isActive: true, userId: 1, hobbyId: 1}},
-    {id: 5, hobby: 'cycling', usersHobbies: {id: 5, isActive: true, userId: 1, hobbyId: 2}},
-    {id: 6, hobby: 'reading', usersHobbies: {id: 7, isActive: false, userId: 1, hobbyId: 3}},
-    {id: 7, hobby: 'fishing', usersHobbies: {id: 3, isActive: true, userId: 1, hobbyId: 1}},
-    {id: 8, hobby: 'cycling', usersHobbies: {id: 5, isActive: true, userId: 1, hobbyId: 2}},
-    {id: 9, hobby: 'reading', usersHobbies: {id: 7, isActive: false, userId: 1, hobbyId: 3}}
-  ]
-  const curretHobbies = [
-    {id: 1, hobby: 'fishing', usersHobbies: {id: 3, isActive: true, userId: 1, hobbyId: 1}},
-    {id: 2, hobby: 'cycling', usersHobbies: {id: 5, isActive: true, userId: 1, hobbyId: 2}},
-    {id: 3, hobby: 'reading', usersHobbies: {id: 7, isActive: false, userId: 1, hobbyId: 3}}
-  ]
-  const {firstName, lastName, age, email} = results
+  const [errMessage, setErrMessage] = useState('')
+  const {profile, hobbiesList} = useSelector(state => state)
+
+  const handleUpdate = (e) => {
+    e.preventDefault()
+
+    const {results} = profile
+
+    let err
+    const firstName = document.getElementById('firstName').value
+    const lastName = document.getElementById('lastName').value
+    const age = document.getElementById('age').value
+    const email = document.getElementById('email').value
+    const password = document.getElementById('password').value
+    const confirmPassword = document.getElementById('confirmPassword').value
+
+    if (firstName && !/^[A-Za-z]+$/.test(firstName) && firstName === results.firstName) {
+      setErrMessage('Fist name must be string')
+      err = true
+    }
+    if (lastName && !/^[A-Za-z]+$/.test(lastName) && lastName === results.lastName) {
+      setErrMessage('Last name must be string')
+      err = true
+    }
+    if (!checkEmail(email)) {
+      setErrMessage('Email not valid')
+      err = true
+    }
+    if (password && !checkPassword(password)) {
+      setErrMessage('Passw')
+      err = true
+    }
+    if (password !== confirmPassword) {
+      setErrMessage('Password must be at least 6 characters, uppercase and lowercase')
+      err = true
+    }
+    if (!err) {
+      console.log('tes')
+    }
+    console.log(firstName, lastName, age, email)
+  }
 
   return (
     <Layout title='Update Profile'>
@@ -50,15 +75,15 @@ const UpdateProfile = () => {
         <Container maxWidth='md' sx={{position: 'relative', display: 'flex', flexDirection: 'column', justifyContent: 'center', height: '100%', zIndex: 2, padding: '90px 0'}}>
           <Typography variant='h3' component='h1' fontWeight='600' color='common.white' textAlign='center' sx={{mb: 5}}>Edit Profile</Typography>
           <Container maxWidth='sm'>
-            <Input id='firstName' label={firstName} fullWidth={true} />
-            <Input id='lastName' label={lastName} fullWidth={true} />
-            <Input id='age' label={age} fullWidth={true} type='number' />
-            <Input id='email' label={email} fullWidth={true} type='email' />
+            <Input id='firstName' label={profile.results?.firstName} fullWidth={true} />
+            <Input id='lastName' label={profile.results?.lastName} fullWidth={true} />
+            <Input id='age' label={profile.results?.age} fullWidth={true} type='number' />
+            <Input id='email' label={profile.results?.email} fullWidth={true} type='email' />
             <Input id='password' label='Password' fullWidth={true} type='password' />
             <Input id='confirmPassword' label='Confirm Password' fullWidth={true} type='password' />
             <Typography variant='p' component='p' color='common.white' sx={{mt: 4}}>Your Hobbies: </Typography>
             <List sx={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start'}}>
-              {curretHobbies.map(({id, hobby}) => (
+              {profile.results?.hobbies.map(({id, hobby}) => (
                 <ListItem key={id} sx={{width: 'fit-content'}}>
                   <ListItemText sx={{color: 'white'}}>{hobby},</ListItemText>
                 </ListItem>
@@ -73,13 +98,13 @@ const UpdateProfile = () => {
                 sx={{bgcolor: 'rgba(236, 240, 241, 0.2)', color: 'white'}}
                 // onChange={}
               >
-                {hobbies.map(data => (
+                {hobbiesList.results?.map(data => (
                   <MenuItem value={data.id} key={data.id}>{data.hobby}</MenuItem>
                 ))}
               </Select>
             </FormControl>
             <Box sx={{textAlign: 'center', my: 5}}>
-              <Button variant='contained' sx={{width: '50%', height: '50px', fontWeight: '600'}}>Update</Button>
+              <Button variant='contained' sx={{width: '50%', height: '50px', fontWeight: '600'}} onClick={handleUpdate}>Update</Button>
             </Box>
           </Container>
         </Container>

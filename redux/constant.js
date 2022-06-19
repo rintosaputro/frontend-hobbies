@@ -10,7 +10,7 @@ const constant = {
   GET_HOBBY_NAME: 'GET_HOBBY_NAME',
   ADD_HOBBY: 'ADD_HOBBY',
   ADD_HOBBY_USER: 'ADD_HOBBY_USER',
-
+  UPDATE_PROFILE: 'UPDATE_PROFILE',
 }
 
 export default constant

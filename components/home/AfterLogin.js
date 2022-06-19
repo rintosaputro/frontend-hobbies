@@ -2,9 +2,13 @@ import { Box, Container, Typography,  Grid, Button } from '@mui/material'
 import Image from 'next/image'
 import React, { useState } from 'react'
 import {useRouter} from 'next/router'
+import {useDispatch} from 'react-redux'
 import ListHobby from '../ListHobby'
 import ModalHobby from './ModalHobby'
 import UserList from './UserList'
+import constant from '../../redux/constant'
+
+const {AUTH_CLEAR} = constant
 
 const AfterLogin = () => {
   const hobbies = [
@@ -15,12 +19,22 @@ const AfterLogin = () => {
   const [open, setOpen] = useState(false)
 
   const route = useRouter()
+  const dispatch = useDispatch()
 
   const handleOpenModal = () => setOpen(true)
   const handleCloseModal = () => setOpen(false)
   const handleUpdateProfile = (e) => {
     e.preventDefault()
     route.push('/update-profile')
+  }
+
+  const handleLogout = (e) => {
+    e.preventDefault()
+    dispatch({type: 'AUTH_LOGOUT'})
+    dispatch({type: AUTH_CLEAR})
+    dispatch({type: 'AUTH_LOGOUT_CLEAR'})
+    window.localStorage.removeItem('token')
+    route.push('/login')
   }
 
   return (
@@ -59,7 +73,7 @@ const AfterLogin = () => {
                   <Button variant='outlined' sx={{color: '#48dbfb'}} onClick={handleUpdateProfile} fullWidth>Update profile</Button>
                 </Grid>
                 <Grid item xs={12} md={6} lg={4}>
-                  <Button variant='contained' color='secondary' onClick={handleUpdateProfile} fullWidth>Log out</Button>
+                  <Button variant='contained' color='secondary' onClick={handleLogout} fullWidth>Log out</Button>
                 </Grid>
               </Grid>
               <ListHobby hobbies={hobbies} profile={true} />

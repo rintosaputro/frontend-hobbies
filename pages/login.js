@@ -23,7 +23,8 @@ const Login = () => {
   }, [])
   
   useEffect(() => {
-    if (login.results.token) {
+    const token = window.localStorage.getItem('token')
+    if (token) {
       route.push('/')
     }
   }, [login])

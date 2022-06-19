@@ -34,7 +34,7 @@ const login = (state = intialState, action) => {
   }
   case `${AUTH_CLEAR}`: {
     return {
-      ...state
+      ...intialState
     }
   }
   default: {

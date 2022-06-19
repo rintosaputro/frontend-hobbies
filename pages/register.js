@@ -7,28 +7,24 @@ import Image from 'next/image'
 import Input from '../components/Input'
 import { checkEmail, checkPassword } from '../helper/validator'
 import registerAction from '../redux/actions/auth/register'
-import loginAction from '../redux/actions/auth/login'
 
 const Register = () => {
   const [errMessage, setErrMessage] = useState('')
-  const [dataLogin, setDataLogin] = useState({})
   const dispatch = useDispatch()
   const {register} = useSelector(state => state)
   const route = useRouter()
-
-  useEffect(() => {
-    if (register.isSuccess) {
-      route.push('/login')
-      const {email, password} = dataLogin
-      dispatch(loginAction(email, password))
-    }
-  }, [register])
 
   useEffect(() => {
     if (window.localStorage.getItem('token')) {
       route.push('/')
     }
   }, [])
+
+  useEffect(() => {
+    if (register.isSuccess) {
+      route.push('/login')
+    }
+  }, [register])
 
   const handleRegister = (e) => {
     e.preventDefault()
@@ -64,7 +60,6 @@ const Register = () => {
     }
     if (!err) {
       dispatch(registerAction(firstName, lastName, age, email, password))
-      setDataLogin({email, password})
     }
   }
 

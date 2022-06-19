@@ -8,19 +8,23 @@ import ModalHobby from './home/ModalHobby'
 const ListHobby = ({hobbies, profile}) => {
   const [open, setOpen] = useState(false)
   const [labelEdit, setLabelEdit] = useState('')
+  const [hobbyId, setHobbyId] = useState()
   const [isActive, setIsActive] = useState()
+  const [idItem, setId] = useState()
 
-  const handleOpen = (label, activeHobby) => {
+  const handleOpen = (label, idHobby, activeHobby, id) => {
     setOpen(true)
     setLabelEdit(label)
     setIsActive(activeHobby)
+    setHobbyId(idHobby)
+    setId(id)
   }
 
   const handleClose = () => setOpen(false)
 
   return (
     <>
-      <ModalHobby open={open} handleClose={handleClose} label={labelEdit} activeHobby={isActive} />
+      <ModalHobby open={open} handleClose={handleClose} label={labelEdit} activeHobby={isActive} hobbyId={hobbyId} id={idItem} />
       <List>
         {hobbies?.map((data) => {
           const {usersHobbies} = data
@@ -30,7 +34,7 @@ const ListHobby = ({hobbies, profile}) => {
               key={usersHobbies.id}
               secondaryAction={
                 profile && <Box sx={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-                  <IconButton edge="end" aria-label="delete" onClick={() => handleOpen(data.hobby, usersHobbies.isActive)}>
+                  <IconButton edge="end" aria-label="delete" onClick={() => handleOpen(data.hobby, usersHobbies.hobbyId, usersHobbies.isActive, usersHobbies.id)}>
                     <ModeEditOutlineIcon color='primary' />
                     <Typography component='p' color='common.white' sx={{mx: 1, fontSize: '15px'}}>
                       Edit

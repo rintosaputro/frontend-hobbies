@@ -15,7 +15,7 @@ const AfterLogin = () => {
 
   const route = useRouter()
   const dispatch = useDispatch()
-  const {profile} = useSelector(state => state)
+  const {profile, usersList} = useSelector(state => state)
 
   const handleOpenModal = () => setOpen(true)
   const handleCloseModal = () => setOpen(false)
@@ -72,12 +72,12 @@ const AfterLogin = () => {
                   <Button variant='contained' color='secondary' onClick={handleLogout} fullWidth>Log out</Button>
                 </Grid>
               </Grid>
-              <ListHobby hobbies={profile?.results.hobbies} profile={true} />
+              <ListHobby hobbies={profile.results?.hobbies} profile={true} />
             </Grid>
           </Grid>
           <Grid container justifyContent={'center'}>
             <Grid item xs={12} sm={8} md={6}>
-              <UserList />
+              {usersList.results.length > 0 && <UserList users={usersList.results} />}
             </Grid>
           </Grid>
         </Container>

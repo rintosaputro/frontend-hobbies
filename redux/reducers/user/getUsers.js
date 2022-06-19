@@ -1,6 +1,6 @@
 import constant from '../../constant'
 
-const {GET_PROFILE} = constant
+const {GET_USERS} = constant
 
 const intialState = {
   isLoading: false,
@@ -9,22 +9,22 @@ const intialState = {
   results: {}
 }
 
-const getProfile = (state = intialState, action) => {
+const getUsers = (state = intialState, action) => {
   switch (action.type) {
-  case `${GET_PROFILE}_LOADING`: {
+  case `${GET_USERS}_LOADING`: {
     return {
       ...state,
       isLoading: true
     }
   }
-  case `${GET_PROFILE}`: {
+  case `${GET_USERS}`: {
     return {
       ...state,
       isSuccess: true,
       results: action.payload
     }
   }
-  case `${GET_PROFILE}_ERR`: {
+  case `${GET_USERS}_ERR`: {
     return {
       ...state,
       isError: true,
@@ -37,4 +37,4 @@ const getProfile = (state = intialState, action) => {
   }
 }
 
-export default getProfile
+export default getUsers

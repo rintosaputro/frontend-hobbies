@@ -22,7 +22,7 @@ const ListHobby = ({hobbies, profile}) => {
     <>
       <ModalHobby open={open} handleClose={handleClose} label={labelEdit} activeHobby={isActive} />
       <List>
-        {hobbies.map((data) => {
+        {hobbies?.map((data) => {
           const {usersHobbies} = data
           return (
             <ListItem
@@ -30,13 +30,6 @@ const ListHobby = ({hobbies, profile}) => {
               key={usersHobbies.id}
               secondaryAction={
                 profile && <Box sx={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-                  {/* <IconButton edge="end" aria-label="delete">
-                    <DeleteIcon color='secondary' />
-                    <Typography component='p' color='common.white' sx={{mx: 1, fontSize: '15px'}}>
-                      Delete
-                    </Typography>
-                  </IconButton> */}
-                  {/* <Typography component='p' variant='h5' color='rgba(241, 196, 15,1.0)' sx={{ml: 1}}>|</Typography> */}
                   <IconButton edge="end" aria-label="delete" onClick={() => handleOpen(data.hobby, usersHobbies.isActive)}>
                     <ModeEditOutlineIcon color='primary' />
                     <Typography component='p' color='common.white' sx={{mx: 1, fontSize: '15px'}}>

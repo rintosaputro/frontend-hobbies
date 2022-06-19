@@ -7,6 +7,7 @@ import editUserHobbyAction from '../../redux/actions/hobby/editUserHobby'
 import getHobbyByNameAction from '../../redux/actions/hobby/getHobbyByName'
 import addHobbyAction from '../../redux/actions/hobby/addHobby'
 import { getProfile } from '../../redux/actions/profile/profile'
+import addHobbyUserAction from '../../redux/actions/hobby/addHobbiesUsers'
 
 const style = {
   position: 'absolute',
@@ -27,9 +28,10 @@ const ModalHobby = ({id, open, handleClose, label, activeHobby, hobbyId, addHobb
   const [onChange, setOnChange] = useState(false)
   const [errMessage, setErrMessage] = useState('')
   const [dataChange, setDataChange] = useState({})
+  const [isAddHobby, setIsAddHobby] = useState(false)
 
   const dispatch = useDispatch()
-  const {getHobbyByName, addHobby: addHobbyState, editUserHobby} = useSelector(state => state)
+  const {getHobbyByName, addHobby: addHobbyState, editUserHobby, addHobbiesUsers} = useSelector(state => state)
 
   useEffect(() => {
     if (getHobbyByName.isError && inputValue) {
@@ -48,6 +50,9 @@ const ModalHobby = ({id, open, handleClose, label, activeHobby, hobbyId, addHobb
     const {id, isActive} = dataChange
     if (addHobbyState.isSuccess) {
       dispatch(editUserHobbyAction(id, isActive, addHobbyState.results.id))
+    }
+    if (addHobbyState.isSuccess && isAddHobby) {
+      dispatch(addHobbyUserAction(addHobbyState.results.id, isActive))
     }
   }, [addHobbyState.isSuccess])
 
@@ -91,6 +96,23 @@ const ModalHobby = ({id, open, handleClose, label, activeHobby, hobbyId, addHobb
       }
     }
   }
+
+  const handleAdd = (e) => {
+    e.preventDefault()
+    dispatch({type: 'ADD_HOBBY_USER_CLEAR'})
+
+    let err
+    setErrMessage('')
+
+    if (!inputValue) {
+      setErrMessage('Hobby can not be empty')
+      err = true
+    }
+    if (inputValue && !err) {
+      dispatch(addHobbyAction(inputValue))
+      setIsAddHobby(true)
+    }
+  }
   
   return (
     <div>
@@ -125,14 +147,15 @@ const ModalHobby = ({id, open, handleClose, label, activeHobby, hobbyId, addHobb
               </Select>
             </FormControl>
             {errMessage && <Typography variant='h5' component={'p'} color='secondary' textAlign={'center'} sx={{mb: 2}}>{errMessage}</Typography>}
+            {(addHobbiesUsers.isSuccess || editUserHobby.isSuccess) && <Typography variant='h5' component={'p'} textAlign={'center'} sx={{mb: 2}}>Success</Typography>}
             {
               (getHobbyByName.isLoading || addHobbyState.isLoading || editUserHobby.isLoading) 
                 ? <Button variant='contained' sx={{width: '50%', height: '50px', fontWeight: '600'}}>
                   <CircularProgress sx={{color: 'white'}} />
                 </Button>
                 : (addHobby
-                  ? <Button variant='contained' onClick={handleEdit} fullWidth>Add Hobby</Button>
-                  : <Button variant='contained' onClick={handleEdit} fullWidth>Update</Button> )
+                  ? <Button variant='contained' onClick={handleAdd} fullWidth>Add Hobby</Button>
+                  : <Button variant='contained' onClick={handleEdit} fullWidth>Update</Button>)
             }
           </Box>
         </Box>

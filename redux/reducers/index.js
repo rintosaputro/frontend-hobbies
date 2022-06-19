@@ -9,6 +9,7 @@ import getHobbies from './hobbies/getAllHobbies'
 import editUserHobby from './hobbies/editUserHobby'
 import getHobbyByName from './hobbies/getHobbyByName'
 import addHobby from './hobbies/addHobby'
+import addHobbiesUsers from './hobbies/addHobbiesUsers'
 
 const rootReducer = combineReducers({
   login,
@@ -20,7 +21,8 @@ const rootReducer = combineReducers({
   hobbiesList: getHobbies,
   editUserHobby,
   getHobbyByName,
-  addHobby
+  addHobby,
+  addHobbiesUsers
 })
 
 export default rootReducer

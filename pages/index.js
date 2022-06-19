@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import {useSelector} from 'react-redux'
 import AfterLogin from '../components/home/AfterLogin'
 import BeforeLogin from '../components/home/BeforeLogin'
+import Layout from '../components/Layout'
 
 export default function Home() {
   const [isLogin, setIsLogin] = useState()
@@ -29,11 +30,11 @@ export default function Home() {
   }, [logout])
 
   return (
-    <>
+    <Layout title='Home'>
       {isLogin
         ? <AfterLogin />
         : <BeforeLogin />
       }
-    </>
+    </Layout>
   )
 }

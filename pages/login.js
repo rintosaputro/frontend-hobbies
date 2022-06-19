@@ -7,6 +7,8 @@ import Input from '../components/Input'
 import Layout from '../components/Layout'
 import loginAction from '../redux/actions/auth/login'
 import { checkEmail } from '../helper/validator'
+import { getProfile } from '../redux/actions/profile/profile'
+import getAllUsers from '../redux/actions/user/getAllUsers'
 
 const Login = () => {
   const [errMessage, setErrMessage] = useState('')
@@ -23,8 +25,9 @@ const Login = () => {
   }, [])
   
   useEffect(() => {
-    const token = window.localStorage.getItem('token')
-    if (token) {
+    if (login.isSuccess) {
+      dispatch(getProfile)
+      dispatch(getAllUsers)
       route.push('/')
     }
   }, [login])

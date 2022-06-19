@@ -1,25 +1,26 @@
 import { Box, Container, Typography,  Grid, Button } from '@mui/material'
 import Image from 'next/image'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {useRouter} from 'next/router'
-import {useDispatch} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import ListHobby from '../ListHobby'
 import ModalHobby from './ModalHobby'
 import UserList from './UserList'
 import constant from '../../redux/constant'
+import getAllHobbiesAction from '../../redux/actions/hobby/getAllHobbies'
 
 const {AUTH_CLEAR} = constant
 
 const AfterLogin = () => {
-  const hobbies = [
-    {id: 1, hobby: 'fishing', usersHobbies: {id: 3, isActive: true, userId: 1, hobbyId: 1}},
-    {id: 2, hobby: 'cycling', usersHobbies: {id: 5, isActive: true, userId: 1, hobbyId: 2}},
-    {id: 3, hobby: 'reading', usersHobbies: {id: 7, isActive: false, userId: 1, hobbyId: 3}}
-  ]
   const [open, setOpen] = useState(false)
 
   const route = useRouter()
   const dispatch = useDispatch()
+  const {profile, usersList} = useSelector(state => state)
+
+  useEffect(() => {
+    dispatch(getAllHobbiesAction)
+  }, [])
 
   const handleOpenModal = () => setOpen(true)
   const handleCloseModal = () => setOpen(false)
@@ -64,7 +65,13 @@ const AfterLogin = () => {
         <Container sx={{position: 'relative', padding: '90px 10px', height: '100%', zIndex: 2}}>
           <Grid container justifyContent={'center'}>
             <Grid item xs={12} sm={8} md={6}>
-              <Typography variant='h3' component='h1' fontWeight='600' color='common.white' textAlign={'center'} sx={{mb: 5}}>Hobby List</Typography>
+              <Typography variant='h3' component='h1' fontWeight='600' color='common.white' textAlign={'center'} sx={{mb: 5}}>{`${profile?.results.firstName} ${profile?.results.lastName}`}</Typography>
+              <p>{profile.results.age}</p>
+              <Typography variant='h4' component='h2' fontWeight='600' color='common.white' textAlign={'center'} sx={{mb: 5}}>Hobby List</Typography>
+              {profile.results.hobbies?.length > 0 
+                ? <ListHobby hobbies={profile.results?.hobbies} profile={true} />
+                : <Typography variant='h4' component='h2' fontWeight='bold' color='secondary' textAlign='center' sx={{mb: 5}}>Hobby is Empty!</Typography>
+              }
               <Grid container spacing={2}>
                 <Grid item xs={12} md={6} lg={4}>
                   <Button variant='contained' onClick={handleOpenModal} sx={{fontWeight: 'bold'}} fullWidth>Add new hobby</Button>
@@ -76,12 +83,11 @@ const AfterLogin = () => {
                   <Button variant='contained' color='secondary' onClick={handleLogout} fullWidth>Log out</Button>
                 </Grid>
               </Grid>
-              <ListHobby hobbies={hobbies} profile={true} />
             </Grid>
           </Grid>
-          <Grid container justifyContent={'center'}>
+          <Grid container justifyContent={'center'} sx={{marginTop: '100px'}}>
             <Grid item xs={12} sm={8} md={6}>
-              <UserList />
+              {usersList.results.length > 0 && <UserList users={usersList.results} />}
             </Grid>
           </Grid>
         </Container>

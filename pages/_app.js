@@ -7,16 +7,19 @@ import '../styles/globals.css'
 import { Provider, useDispatch } from 'react-redux'
 import store from '../redux/store'
 import { useEffect } from 'react'
+import { getProfile } from '../redux/actions/profile/profile'
+import getAllUsers from '../redux/actions/user/getAllUsers'
 
 const MyComponent = ({children}) => {
   const dispatch = useDispatch()
 
   useEffect(() => {
     const token = window.localStorage.getItem('token')
-    // if (token) {
-
-    // }
-  }, [])
+    if (token) {
+      dispatch(getProfile)
+      dispatch(getAllUsers)
+    }
+  }, [dispatch])
 
   return <>{children}</>
 }

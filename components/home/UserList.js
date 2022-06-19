@@ -4,13 +4,7 @@ import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt'
 import React from 'react'
 import {useRouter} from 'next/router'
 
-const UserList = () => {
-  const results = [
-    {id: 1, firstName: 'Rinto', lastName: 'Saputro', age: 26},
-    {id: 2, firstName: 'Alex', lastName: 'Hon', age: 26},
-    {id: 3, firstName: 'Jono', lastName: 'Alexader', age: 26},
-    {id: 4, firstName: 'jon', lastName: 'Saputri', age: 26}
-  ]
+const UserList = ({users}) => {
 
   const route = useRouter()
 
@@ -23,7 +17,7 @@ const UserList = () => {
     <Box sx={{color: 'white', textAlign: 'center', mt: 5}}>
       <Typography variant='h3' component='h1' fontWeight='600' color='common.white' textAlign={'center'} sx={{mb: 5}}>User List</Typography>
       <List>
-        {results.map(data => (
+        {users?.map(data => (
           <ListItem
             key={data.id}
             onClick={(e) => handleUserDetail(data.id, e)}

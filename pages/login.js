@@ -73,7 +73,7 @@ const Login = () => {
         <Container maxWidth='md' sx={{position: 'relative', display: 'flex', flexDirection: 'column', justifyContent: 'center', height: '100%', zIndex: 2}}>
           <Typography variant='h3' component='h1' fontWeight='600' color='common.white' textAlign='center' sx={{mb: 5}}>Login to Your Account</Typography>
           <Container maxWidth='sm'>
-            {errMessage && <Typography variant='h5' component={'p'} color='secondary' textAlign={'center'}>{errMessage}</Typography>}
+            {(login.isError || errMessage) && <Typography variant='h5' component={'p'} color='secondary' textAlign={'center'}>{login.results || errMessage}</Typography>}
             <Input id='email' label='Email' fullWidth={true} type='email' />
             <Input id='password' label='Password' fullWidth={true} type='password' />
             <Box sx={{textAlign: 'center', my: 3}}>

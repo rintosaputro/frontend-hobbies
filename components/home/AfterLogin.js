@@ -51,10 +51,17 @@ const AfterLogin = () => {
           <Grid container justifyContent={'center'}>
             <Grid item xs={12} sm={8} md={6}>
               <Typography variant='h3' component='h1' fontWeight='600' color='common.white' textAlign={'center'} sx={{mb: 5}}>Hobby List</Typography>
-              <Box sx={{display: 'flex', justifyContent: 'center'}}>
-                <Button variant='contained' onClick={handleOpenModal} sx={{fontWeight: 'bold'}}>Add new hobby</Button>
-                <Button variant='outlined' sx={{ml: 3, color: '#48dbfb'}} onClick={handleUpdateProfile}>Update profile</Button>
-              </Box>
+              <Grid container spacing={2}>
+                <Grid item xs={12} md={6} lg={4}>
+                  <Button variant='contained' onClick={handleOpenModal} sx={{fontWeight: 'bold'}} fullWidth>Add new hobby</Button>
+                </Grid>
+                <Grid item xs={12} md={6} lg={4}>
+                  <Button variant='outlined' sx={{color: '#48dbfb'}} onClick={handleUpdateProfile} fullWidth>Update profile</Button>
+                </Grid>
+                <Grid item xs={12} md={6} lg={4}>
+                  <Button variant='contained' color='secondary' onClick={handleUpdateProfile} fullWidth>Log out</Button>
+                </Grid>
+              </Grid>
               <ListHobby hobbies={hobbies} profile={true} />
             </Grid>
           </Grid>

@@ -1,6 +1,6 @@
-import caseType from '../../constant'
+import constant from '../../constant'
 
-const {AUTH_LOGIN, AUTH_CLEAR} = caseType
+const {AUTH_LOGIN, AUTH_CLEAR} = constant
 
 const intialState = {
   isLoading: false,
@@ -18,7 +18,7 @@ const login = (state = intialState, action) => {
     }
   }
   case `${AUTH_LOGIN}`: {
-    window.localStorage.setItem('token', action.payload)
+    window.localStorage.setItem('token', action.payload.token)
     return {
       ...state,
       isSuccess: true,

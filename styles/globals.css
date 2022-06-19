@@ -7,8 +7,20 @@ body {
 }
 
 a {
-  color: inherit;
+  color: white;
   text-decoration: none;
+}
+
+.back {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: 25px;
+  margin-bottom: 50px;
+  width: fit-content;
+}
+.back:hover {
+  color: rgba(52, 231, 228,1);
 }
 
 * {

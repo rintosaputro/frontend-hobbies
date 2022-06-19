@@ -31,6 +31,9 @@ const getHobbyByName = (state = intialState, action) => {
       results: action.payload
     }
   }
+  case `${GET_HOBBY_NAME}_CLEAR`: {
+    return {...intialState}
+  }
   default: {
     return {...state}
   }

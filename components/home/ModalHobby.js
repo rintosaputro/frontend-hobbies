@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Typography from '@mui/material/Typography'
-import {Modal, Box, FormControl, InputLabel, Select, MenuItem, Button} from '@mui/material'
+import {Modal, Box, FormControl, InputLabel, Select, MenuItem, CircularProgress, Button} from '@mui/material'
 import Input from '../Input'
 import editUserHobbyAction from '../../redux/actions/hobby/editUserHobby'
 import getHobbyByNameAction from '../../redux/actions/hobby/getHobbyByName'
 import addHobbyAction from '../../redux/actions/hobby/addHobby'
+import { getProfile } from '../../redux/actions/profile/profile'
 
 const style = {
   position: 'absolute',
@@ -28,16 +29,36 @@ const ModalHobby = ({id, open, handleClose, label, activeHobby, hobbyId, addHobb
   const [dataChange, setDataChange] = useState({})
 
   const dispatch = useDispatch()
-  const {getHobbyByName} = useSelector(state => state)
+  const {getHobbyByName, addHobby: addHobbyState, editUserHobby} = useSelector(state => state)
 
-  // useEffect(() => {
-  //   const {id, isActive, hobbyId} = dataChange
-  //   if (!getHobbyByName.isError) {
-  //     dispatch(editUserHobbyAction(id, isActive, hobbyId))
-  //   } else {
-  //     dispatch(addHobbyAction(inputValue))
-  //   }
-  // }, [getHobbyByName.isError])
+  useEffect(() => {
+    if (getHobbyByName.isError && inputValue) {
+      dispatch(addHobbyAction(inputValue))
+    }
+  }, [getHobbyByName.isError])
+
+  useEffect(() => {
+    const {id, isActive} = dataChange
+    if (getHobbyByName.isSuccess && inputValue) {
+      dispatch(editUserHobbyAction(id, isActive, getHobbyByName.results[0]?.id))
+    } 
+  }, [getHobbyByName.isSuccess])
+
+  useEffect(() => {
+    const {id, isActive} = dataChange
+    if (addHobbyState.isSuccess) {
+      dispatch(editUserHobbyAction(id, isActive, addHobbyState.results.id))
+    }
+  }, [addHobbyState.isSuccess])
+
+  useEffect(() => {
+    if (editUserHobby.isSuccess) {
+      dispatch(getProfile)
+      dispatch({
+        type: 'EDIT_USER_HOBBY_CLEAR'
+      })
+    } 
+  }, [editUserHobby.isSuccess])
 
   const handleChangeSelect = (event) => {
     setIsActive(event.target.value)
@@ -53,7 +74,8 @@ const ModalHobby = ({id, open, handleClose, label, activeHobby, hobbyId, addHobb
     e.preventDefault()
     setErrMessage('')
     let err
-    alert(isActive)
+    
+    dispatch({type: 'GET_HOBBY_NAME_CLEAR'})
   
     if ((inputValue === label && activeHobby === isActive) || (!onChange)) {
       err = true
@@ -103,9 +125,14 @@ const ModalHobby = ({id, open, handleClose, label, activeHobby, hobbyId, addHobb
               </Select>
             </FormControl>
             {errMessage && <Typography variant='h5' component={'p'} color='secondary' textAlign={'center'} sx={{mb: 2}}>{errMessage}</Typography>}
-            {addHobby
-              ? <Button variant='contained' onClick={handleEdit} fullWidth>Add Hobby</Button>
-              : <Button variant='contained' onClick={handleEdit} fullWidth>Update</Button> 
+            {
+              (getHobbyByName.isLoading || addHobbyState.isLoading || editUserHobby.isLoading) 
+                ? <Button variant='contained' sx={{width: '50%', height: '50px', fontWeight: '600'}}>
+                  <CircularProgress sx={{color: 'white'}} />
+                </Button>
+                : (addHobby
+                  ? <Button variant='contained' onClick={handleEdit} fullWidth>Add Hobby</Button>
+                  : <Button variant='contained' onClick={handleEdit} fullWidth>Update</Button> )
             }
           </Box>
         </Box>

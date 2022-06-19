@@ -31,6 +31,11 @@ const editUserHobby = (state = intialState, action) => {
       results: action.payload
     }
   }
+  case `${EDIT_USER_HOBBY}_CLEAR`: {
+    return {
+      ...intialState
+    }
+  }
   default: {
     return {...state}
   }

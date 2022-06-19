@@ -65,8 +65,8 @@ const AfterLogin = () => {
         <Container sx={{position: 'relative', padding: '90px 10px', height: '100%', zIndex: 2}}>
           <Grid container justifyContent={'center'}>
             <Grid item xs={12} sm={8} md={6}>
-              <Typography variant='h3' component='h1' fontWeight='600' color='common.white' textAlign={'center'} sx={{mb: 5}}>{`${profile?.results.firstName} ${profile?.results.lastName}`}</Typography>
-              <p>{profile.results.age}</p>
+              <Typography variant='h3' component='h1' fontWeight='600' color='common.white' textAlign={'center'}>{`${profile?.results.firstName} ${profile?.results.lastName}`}</Typography>
+              <Typography variant='h4' component='p' fontWeight='bold' color='primary' textAlign={'center'} sx={{mb: 5}}>age: {profile.results.age}</Typography>
               <Typography variant='h4' component='h2' fontWeight='600' color='common.white' textAlign={'center'} sx={{mb: 5}}>Hobby List</Typography>
               {profile.results.hobbies?.length > 0 
                 ? <ListHobby hobbies={profile.results?.hobbies} profile={true} />

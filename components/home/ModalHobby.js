@@ -48,25 +48,39 @@ const ModalHobby = ({id, open, handleClose, label, activeHobby, hobbyId, addHobb
   }, [getHobbyByName.isSuccess])
 
   useEffect(() => {
-    const {id, isActive} = dataChange
+    const {id} = dataChange
     if (addHobbyState.isSuccess && isEdit) {
-      dispatch(editUserHobbyAction(id, isActive, addHobbyState.results.id))
+      dispatch(editUserHobbyAction(id, dataChange.isActive, addHobbyState.results.id))
       setIsEdit(false)
     }
     if (addHobbyState.isSuccess && isAddHobby) {
-      setIsAddHobby(false)
       dispatch(addHobbyUserAction(addHobbyState.results.id, isActive))
+      alert(isActive)
     }
   }, [addHobbyState.isSuccess])
 
   useEffect(() => {
     if (editUserHobby.isSuccess) {
       dispatch(getProfile)
-      dispatch({
-        type: 'EDIT_USER_HOBBY_CLEAR'
-      })
+      setTimeout(() => {
+        dispatch({
+          type: 'EDIT_USER_HOBBY_CLEAR'
+        })
+      }, 7000)
     } 
   }, [editUserHobby.isSuccess])
+
+  useEffect(() => {
+    if (addHobbiesUsers.isSuccess) {
+      dispatch(getProfile)
+      setIsAddHobby(false)
+      setTimeout(() => {
+        dispatch({
+          type: 'ADD_HOBBY_USER_CLEAR'
+        })
+      }, 7000)
+    }
+  }, [addHobbiesUsers.isSuccess])
 
   const handleChangeSelect = (event) => {
     setIsActive(event.target.value)
@@ -104,7 +118,6 @@ const ModalHobby = ({id, open, handleClose, label, activeHobby, hobbyId, addHobb
 
   const handleAdd = (e) => {
     e.preventDefault()
-    dispatch({type: 'ADD_HOBBY_USER_CLEAR'})
     dispatch({type: 'ADD_HOBBY_CLEAR'})
 
     let err
@@ -117,6 +130,7 @@ const ModalHobby = ({id, open, handleClose, label, activeHobby, hobbyId, addHobb
     if (inputValue && !err) {
       dispatch(addHobbyAction(inputValue))
       setIsAddHobby(true)
+      alert(isActive)
     }
   }
   
@@ -137,7 +151,7 @@ const ModalHobby = ({id, open, handleClose, label, activeHobby, hobbyId, addHobb
             <FormControl fullWidth sx={{my: 3}}>
               {
                 addHobby 
-                  ? <InputLabel id="demo-simple-select-label" sx={{color: 'white'}}>Active</InputLabel>
+                  ? <InputLabel id="demo-simple-select-label" sx={{color: 'white'}}>Not Active</InputLabel>
                   : <InputLabel id="demo-simple-select-label" sx={{color: 'white'}}>{activeHobby ? 'Active' : 'Not Active'}</InputLabel>
               }
               <Select
@@ -148,12 +162,12 @@ const ModalHobby = ({id, open, handleClose, label, activeHobby, hobbyId, addHobb
                 onChange={handleChangeSelect}
                 sx={{border: '1px solid teal', color: 'white'}}
               >
-                <MenuItem value={1}>Active</MenuItem>
                 <MenuItem value={0}>Not Active</MenuItem> 
+                <MenuItem value={1}>Active</MenuItem>
               </Select>
             </FormControl>
             {errMessage && <Typography variant='h5' component={'p'} color='secondary' textAlign={'center'} sx={{mb: 2}}>{errMessage}</Typography>}
-            {(addHobbiesUsers.isSuccess || editUserHobby.isSuccess) && <Typography variant='h5' component={'p'} textAlign={'center'} sx={{mb: 2}}>Success</Typography>}
+            {(addHobbiesUsers.isSuccess || editUserHobby.isSuccess) && <Typography variant='h5' component={'p'} textAlign={'center'} sx={{mb: 2}}>Successfully {editUserHobby.isSuccess ? 'Edited' : 'Added'}</Typography>}
             {
               (getHobbyByName.isLoading || addHobbyState.isLoading || editUserHobby.isLoading) 
                 ? <Button variant='contained' sx={{width: '50%', height: '50px', fontWeight: '600'}}>

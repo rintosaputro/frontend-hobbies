@@ -1,6 +1,6 @@
 import http from '../../../helper/helper'
 import constant from '../../constant'
-const {ADD_HOBBY} = constant
+const {ADD_HOBBY_USER} = constant
 
 const addHobbyUserAction = (hobbyId, isActive) => (
   async (dispatch) => {
@@ -14,13 +14,13 @@ const addHobbyUserAction = (hobbyId, isActive) => (
       const {data} = await http(token).post('users-hobbies', param)
 
       dispatch({
-        type: ADD_HOBBY,
+        type: ADD_HOBBY_USER,
         payload: data.results
       })
     }
     catch (err) {
       dispatch({
-        type: `${ADD_HOBBY}_ERR`,
+        type: `${ADD_HOBBY_USER}_ERR`,
         payload: err.response?.data.message
       })
     }

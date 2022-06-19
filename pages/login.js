@@ -88,6 +88,9 @@ const Login = () => {
                 : <Button variant='contained' onClick={handleLogin} sx={{width: '50%', height: '50px', fontWeight: '600'}}>Login</Button>
               }
             </Box>
+            <Box sx={{textAlign: 'center', mt: 5}}>
+              <Button onClick={() => route.push('/register')}>Go to register</Button>
+            </Box>
           </Container>
         </Container>
       </Box>

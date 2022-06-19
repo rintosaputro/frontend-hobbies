@@ -104,6 +104,9 @@ const Register = () => {
                 : <Button variant='contained' onClick={handleRegister} sx={{width: '50%', height: '50px', fontWeight: '600'}}>Register</Button>
               }
             </Box>
+            <Box sx={{textAlign: 'center', mt: 5}}>
+              <Button onClick={() => route.push('/login')}>Go to Login</Button>
+            </Box>
           </Container>
         </Container>
       </Box>
